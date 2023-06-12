@@ -1,28 +1,27 @@
-import axios from 'axios';
-import React, {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { fetchUserCart } from '../../store';
+import axios from "axios"
+import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { fetchUserCart, fetchGuestCart } from "../../store"
 
 const CheckoutPage = () => {
+  const { auth } = useSelector((state) => state)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const {auth} = useSelector(state => state);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [street, setStreet] = useState("")
+  const [city, setCity] = useState("")
+  const [state, setState] = useState("")
+  const [zip, setZip] = useState("")
+  const [number, setNumber] = useState("")
+  const [exp, setExp] = useState("")
+  const [ccv, setCcv] = useState("")
 
-  const[firstName,setFirstName] = useState("");
-  const[lastName,setLastName] = useState("");
-  const[street,setStreet] = useState("");
-  const[city,setCity] = useState("");
-  const[state,setState] = useState("");
-  const[zip,setZip] = useState("");
-  const[number,setNumber] = useState("");
-  const[exp,setExp] = useState("");
-  const[ccv,setCcv] = useState("");
+  const [status, setStatus] = useState("pending")
 
-  const[status, setStatus] = useState("pending");
-
-  let order = "";
+  let order = ""
 
   const submit = async (event) => {
     try {
@@ -34,7 +33,7 @@ const CheckoutPage = () => {
         city,
         state,
         zip,
-        userId: auth.id,
+        userId: auth.id || null, // for users and guests
       }
       const token = window.localStorage.getItem("token")
       order = await axios.post(
@@ -46,27 +45,50 @@ const CheckoutPage = () => {
           },
         }
       )
-      console.log(order);
-      dispatch(fetchUserCart())
+      console.log(order)
+      if (auth.id) {
+        dispatch(fetchUserCart())
+      } else {
+        dispatch(fetchGuestCart())
+      }
       setStatus("created")
     } catch (error) {
-      setStatus("error")
+      console.log(error)
+      setStatus("failed")
     }
   }
 
   const OrderCreated = (
     <div>
-      <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
-        Order Created
-      </h1>
-      <p>{order}</p>
-      <button
-        onClick={() => {
-          navigate("/account")
-        }}
-      >
-        Return to Account
-      </button>
+      {auth.id ? (
+        <div>
+          <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+            Order Created
+          </h1>
+          <p>{order}</p>
+          <button
+            onClick={() => {
+              navigate("/account")
+            }}
+          >
+            Return to Account
+          </button>
+        </div>
+      ) : (
+        <div>
+          <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+            Guest Order Created. Please Sign Up for Exclusive Offers and
+            Discounts!
+          </h1>
+          <button
+            onClick={() => {
+              navigate("/")
+            }}
+          >
+            Return to Home
+          </button>
+        </div>
+      )}
     </div>
   )
 
@@ -87,81 +109,83 @@ const CheckoutPage = () => {
 
   const form = (
     <div className="card">
-      <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">Enter Details</h1>
-      <form  className="flex flex-col justify-center" onSubmit={submit}>
+      <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+        Enter Details
+      </h1>
+      <form className="flex flex-col justify-center" onSubmit={submit}>
         <h3>First Name</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={firstName}
-          onChange={event => setFirstName(event.target.value)}
+          onChange={(event) => setFirstName(event.target.value)}
         />
         <h3>Last Name</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={lastName}
-          onChange={event => setLastName(event.target.value) }
+          onChange={(event) => setLastName(event.target.value)}
         />
         <h3>Street</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={street}
-          onChange={event => setStreet(event.target.value) }
+          onChange={(event) => setStreet(event.target.value)}
         />
         <h3>City</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={city}
-          onChange={event => setCity(event.target.value)}
+          onChange={(event) => setCity(event.target.value)}
         />
         <h3>State</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={state}
-          onChange={event => setState(event.target.value) }
+          onChange={(event) => setState(event.target.value)}
         />
         <h3>Zip</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={zip}
-          onChange={event => setZip(event.target.value) }
+          onChange={(event) => setZip(event.target.value)}
         />
         <h3>CC Number</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={number}
-          onChange={event => setNumber(event.target.value)}
+          onChange={(event) => setNumber(event.target.value)}
         />
         <h3>Exp.</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={exp}
-          onChange={event => setExp(event.target.value) }
+          onChange={(event) => setExp(event.target.value)}
         />
         <h3>CCV</h3>
         <input
           type="text"
-          className = "input"
+          className="input"
           value={ccv}
-          onChange={event => setCcv(event.target.value) }
+          onChange={(event) => setCcv(event.target.value)}
         />
         <button>Submit</button>
       </form>
     </div>
   )
 
-  if(status === "pending"){
+  if (status === "pending") {
     return form
-  }else if(status === "created"){
+  } else if (status === "created") {
     return OrderCreated
-  }else{
+  } else {
     return OrderFailed
   }
 }

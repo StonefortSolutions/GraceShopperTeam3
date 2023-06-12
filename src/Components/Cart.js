@@ -47,7 +47,25 @@ const Cart = () => {
           <div>{totalItems} Items</div>
         </div>
       </div>
-      <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/create")}}>Checkout</button>
+      {auth.id ? (
+        <button
+          className="btn-primary btn-block btn"
+          onClick={() => {
+            navigate("/orders/create")
+          }}
+        >
+          Continue to Checkout
+        </button>
+      ) : (
+        <button
+          className="btn-primary btn-block btn"
+          onClick={() => {
+            navigate("/orders/create")
+          }}
+        >
+          Continue to Checkout as Guest
+        </button>
+      )}
     </div>
   )
 }

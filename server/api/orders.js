@@ -4,22 +4,20 @@ const { User } = require("../db")
 
 module.exports = app
 
-// Create an order
+// Create an order for Users and Guest Users
 app.post("/", async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    const order = await user.createOrder(req.body.data)
-    res.send(order)
-  } catch (ex) {
-    next(ex)
-  }
-})
-
-// Retrieve the guest cart
-app.get("/guest-cart", async (req, res, next) => {
-  try {
-    const guestCart = await User.getGuestCart()
-    res.send(guestCart)
+    if (req.headers.authorization) {
+      // Authenticated User
+      const user = await User.findByToken(req.headers.authorization)
+      const order = await user.createOrder(req.body.data)
+      res.send(order)
+    } else {
+      // Guest User
+      const guestCart = await User.getGuestCart(req.body.userId) // Provide the userId here
+      const order = await User.createGuestOrder(guestCart, req.body.data)
+      res.send(order)
+    }
   } catch (ex) {
     next(ex)
   }

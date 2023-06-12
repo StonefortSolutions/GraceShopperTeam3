@@ -2,31 +2,45 @@ const express = require("express")
 const app = express.Router()
 const { User } = require("../db")
 
-// Get the user's cart
+/*** Cart for Users and Guests ***/
+
+// Get the cart
 app.get("/", async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    res.send(await user.getCart())
+    if (req.headers.authorization) {
+      const user = await User.findByToken(req.headers.authorization)
+      res.send(await user.getCart()) // authenticated user
+    } else {
+      res.send(await User.getGuestCart(req.body.userId)) // guest user
+    }
   } catch (ex) {
     next(ex)
   }
 })
 
-// Add an item to the user's cart
+// Add an item to the cart
 app.post("/", async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    res.send(await user.addToCart(req.body))
+    if (req.headers.authorization) {
+      const user = await User.findByToken(req.headers.authorization)
+      res.send(await user.addToCart(req.body)) // authenticated user
+    } else {
+      res.send(await User.addToGuestCart(req.body.userId, req.body)) // guest user
+    }
   } catch (ex) {
     next(ex)
   }
 })
 
-// Remove an item from the user's cart
+// Remove an item from the cart
 app.put("/", async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    res.send(await user.removeFromCart(req.body))
+    if (req.headers.authorization) {
+      const user = await User.findByToken(req.headers.authorization)
+      res.send(await user.removeFromCart(req.body)) // authenticated user
+    } else {
+      res.send(await User.removeFromGuestCart(req.body.userId, req.body)) //guest user
+    }
   } catch (ex) {
     next(ex)
   }

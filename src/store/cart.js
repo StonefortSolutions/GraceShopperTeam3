@@ -6,6 +6,8 @@ const initialState = {
   cartItems: [],
 }
 
+/*** Users ***/
+
 export const fetchUserCart = createAsyncThunk("fetchUserCart", async () => {
   try {
     const token = window.localStorage.getItem("token")
@@ -21,22 +23,13 @@ export const fetchUserCart = createAsyncThunk("fetchUserCart", async () => {
   }
 })
 
-export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
-  let cart = window.localStorage.getItem("cart");
-  if(!cart){
-    window.localStorage.setItem("cart", JSON.stringify({id: uuidv4(), userId: null}))
-    cart = window.localStorage.getItem("cart");
-  }
-  return JSON.parse(cart)
-}) 
-
 export const addToCart = createAsyncThunk("addToCart", async (payload) => {
   try {
     const token = window.localStorage.getItem("token")
     const response = await axios.post("/api/cart", payload, {
       headers: {
-        authorization: token
-      }
+        authorization: token,
+      },
     })
     return response.data
   } catch (error) {
@@ -44,19 +37,66 @@ export const addToCart = createAsyncThunk("addToCart", async (payload) => {
   }
 })
 
-export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
-  try {
-    const token = window.localStorage.getItem("token")
-    const response = await axios.put("/api/cart", payload, {
-      headers: {
-        authorization: token
-      }
-    })
-    return response.data
-  } catch (error) {
-    console.log(error)
+export const removeFromCart = createAsyncThunk(
+  "removeFromCart",
+  async (payload) => {
+    try {
+      const token = window.localStorage.getItem("token")
+      const response = await axios.put("/api/cart", payload, {
+        headers: {
+          authorization: token,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
   }
+)
+
+/*** Guest ***/
+
+export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
+  let cart = window.localStorage.getItem("cart")
+  if (!cart) {
+    window.localStorage.setItem(
+      "cart",
+      JSON.stringify({ id: uuidv4(), userId: null })
+    )
+    cart = window.localStorage.getItem("cart")
+  }
+  return JSON.parse(cart)
 })
+
+export const addToGuestCart = createAsyncThunk(
+  "addToGuestCart",
+  async (payload) => {
+    try {
+      let cart = window.localStorage.getItem("cart")
+      if (!cart) {
+        cart = JSON.stringify({ id: uuidv4(), userId: null })
+        window.localStorage.setItem("cart", cart)
+      }
+      const response = await axios.post("/api/cart", payload, {})
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+export const removeFromGuestCart = createAsyncThunk(
+  "removeFromGuestCart",
+  async (payload) => {
+    try {
+      const cart = window.localStorage.getItem("cart")
+      const response = await axios.put("/api/cart", payload, {})
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
 
 const cartSlice = createSlice({
   name: "cart",
@@ -66,13 +106,19 @@ const cartSlice = createSlice({
     builder.addCase(fetchGuestCart.fulfilled, (state, action) => {
       return action.payload
     })
-    builder.addCase(fetchUserCart.fulfilled, (state, action) => {
-      return action.payload
-    })
     builder.addCase(addToCart.fulfilled, (state, action) => {
       return action.payload
     })
     builder.addCase(removeFromCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(fetchUserCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(addToGuestCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(removeFromGuestCart.fulfilled, (state, action) => {
       return action.payload
     })
   },
