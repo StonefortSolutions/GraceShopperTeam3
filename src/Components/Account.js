@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../store/auth";
-import { updateUser } from "../store/users";
+import React, { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { logout } from "../store/auth"
+import { updateUser } from "../store/users"
 
 const Account = () => {
-  const { auth } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state)
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
 
-  const [editAccount, setEditAccount] = useState(false);
+  const [editAccount, setEditAccount] = useState(false)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -20,19 +20,17 @@ const Account = () => {
     navigate("/")
   }
 
-  useEffect(()=>{
-    if(auth.id){
-      setEmail(auth.email);
+  useEffect(() => {
+    if (auth.id) {
+      setEmail(auth.email)
       setUsername(auth.username)
     }
-  },[auth])
-
-  
+  }, [auth])
 
   const EditAccount = () => {
-    const originalEmail = email;
-    const originalUsername = username;
-    const [updatedEmail, setUpdatedEmail] = useState(email);
+    const originalEmail = email
+    const originalUsername = username
+    const [updatedEmail, setUpdatedEmail] = useState(email)
     const [updatedUsername, setUpdatedUsername] = useState(username)
     const [isValidUsername, setIsValidUsername] = useState(false)
     const [isValidEmail, setIsValidEmail] = useState(false)
@@ -63,7 +61,7 @@ const Account = () => {
           })
         )
         location.reload()
-        setEditAccount(false);
+        setEditAccount(false)
       }
     }
 
@@ -115,8 +113,8 @@ const Account = () => {
       </div>
     )
   }
-  
-  if(auth.id){
+
+  if (auth.id) {
     return (
       <div className="">
         <div className="flex justify-center">
@@ -130,7 +128,7 @@ const Account = () => {
         </button>
       </div>
     )
-  }else{
+  } else {
     navigate("/account/create")
   }
 }

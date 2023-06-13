@@ -79,7 +79,7 @@ export const Products = ({ currentProducts }) => {
       {currentProducts.map((product) => {
         return (
           <div
-            className="card glass card-compact m-4 w-64 sm:card-normal"
+            className="glass card card-compact m-4 w-64 sm:card-normal"
             key={uuidv4()}
           >
             <figure className="min-h-12">
@@ -109,12 +109,10 @@ export const Products = ({ currentProducts }) => {
                   </span>
                 </div>
               </div>
-              <div className="w-full flex flex-row p-3 justify-center items-center">
+              <div className="flex w-full flex-row items-center justify-center p-3">
                 <WishListButton product={product} />
                 <AddToCartButton product={product} quantity={1} />
-
               </div>
-
             </div>
           </div>
         )

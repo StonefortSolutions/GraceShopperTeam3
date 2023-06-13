@@ -12,7 +12,10 @@ function ToastProvider({ toasts }) {
 
   const renderToasts = (toasts) => {
     return toasts.map((toast) => (
-      <output className={`toast-end toast-bottom toast z-50 shadow-sm`} key={toast.id}>
+      <output
+        className={`toast-end toast-bottom toast z-50 shadow-sm`}
+        key={toast.id}
+      >
         {toast.type === "error" && errorToast(toast.message)}
         {toast.type === "success" && successToast(toast.message)}
         {toast.type === "info" && infoToast(toast.message)}
@@ -22,12 +25,7 @@ function ToastProvider({ toasts }) {
     ))
   }
 
-  return (
-    <div className="toasts flex flex-col">
-      {renderToasts(toasts)}
-    </div>
-
-  )
+  return <div className="toasts flex flex-col">{renderToasts(toasts)}</div>
 }
 export { ToastProvider }
 

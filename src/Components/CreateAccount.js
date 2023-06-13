@@ -1,37 +1,43 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { attemptLogin } from "../store";
-import { useNavigate } from "react-router-dom";
-import { emailValidator, passwordValidator, usernameValidator } from "../util";
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import { useDispatch } from "react-redux"
+import { attemptLogin } from "../store"
+import { useNavigate } from "react-router-dom"
+import { emailValidator, passwordValidator, usernameValidator } from "../util"
 
 const CreateAccount = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [isValidUsername, setIsValidUsername] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
+  const [isValidUsername, setIsValidUsername] = useState(false)
+  const [isValidPassword, setIsValidPassword] = useState(false)
+  const [isValidEmail, setIsValidEmail] = useState(false)
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  useEffect(() => {setIsValidUsername(usernameValidator(username))}, [username]);
-  useEffect(() => {setIsValidPassword(passwordValidator(password))}, [password])
-  useEffect(() => {setIsValidEmail(emailValidator(email))}, [email])
+  useEffect(() => {
+    setIsValidUsername(usernameValidator(username))
+  }, [username])
+  useEffect(() => {
+    setIsValidPassword(passwordValidator(password))
+  }, [password])
+  useEffect(() => {
+    setIsValidEmail(emailValidator(email))
+  }, [email])
 
   const create = async (event) => {
-    try{
-      event.preventDefault();
-      const newUser = {username, password, email}
-      const response = await axios.post("/api/account/create", newUser);
-      dispatch(attemptLogin({username,password}));
-      navigate('/')
-    }catch(error){
-      if(error.response.status === 403){
-        window.alert(error.response.data);
-      }else{
-        throw error;
+    try {
+      event.preventDefault()
+      const newUser = { username, password, email }
+      const response = await axios.post("/api/account/create", newUser)
+      dispatch(attemptLogin({ username, password }))
+      navigate("/")
+    } catch (error) {
+      if (error.response.status === 403) {
+        window.alert(error.response.data)
+      } else {
+        throw error
       }
     }
   }
@@ -55,8 +61,8 @@ const CreateAccount = () => {
           <input
             className={
               isValidPassword
-                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
-                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
             placeholder="password"
             value={password}
@@ -66,8 +72,8 @@ const CreateAccount = () => {
           <input
             className={
               isValidEmail
-                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
-                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
             placeholder="email"
             value={email}
@@ -85,4 +91,4 @@ const CreateAccount = () => {
   )
 }
 
-export default CreateAccount;
+export default CreateAccount

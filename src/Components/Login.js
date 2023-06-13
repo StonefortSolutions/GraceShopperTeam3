@@ -36,8 +36,8 @@ const Login = () => {
             onChange={onChange}
             className={
               credentials.username.length > 0
-                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
-                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
           />
           <input
@@ -48,8 +48,8 @@ const Login = () => {
             onChange={onChange}
             className={
               credentials.password.length > 0
-                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
-                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
           />
           <button className="btn-primary btn">Login</button>

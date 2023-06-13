@@ -6,7 +6,6 @@ module.exports = app
 
 app.get("/", async (req, res, next) => {
   try {
-
     const reviews = await Review.findAll({
       include: [
         {

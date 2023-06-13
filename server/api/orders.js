@@ -8,14 +8,14 @@ module.exports = app
 // Create an order
 app.post("/", async (req, res, next) => {
   try {
-    let order;
-    if(typeof req.headers.authorization !== "undefined"){
+    let order
+    if (typeof req.headers.authorization !== "undefined") {
       const user = await User.findByToken(req.headers.authorization)
       order = await user.createOrder(req.body.data)
-    }else{
+    } else {
       order = await Order.create(req.body.data.newOrder)
-      const orderItems = [];
-      for(let item of req.body.data.cart.cartItems){
+      const orderItems = []
+      for (let item of req.body.data.cart.cartItems) {
         const createLineItem = async () => {
           await conn.models.lineItem.create({
             productId: item.product.id,
@@ -23,9 +23,9 @@ app.post("/", async (req, res, next) => {
             orderId: order.dataValues.id,
           })
         }
-        orderItems.push(createLineItem());
+        orderItems.push(createLineItem())
       }
-      await Promise.all(orderItems);
+      await Promise.all(orderItems)
     }
     res.send(order)
   } catch (ex) {
@@ -37,19 +37,21 @@ app.get("/all", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
     if (user.isAdmin) {
-      res.send(await Order.findAll({
-        include: [
-          {
-            model: LineItem,
-            include: Product,
-          },
-          User,
-        ],
-      }))
+      res.send(
+        await Order.findAll({
+          include: [
+            {
+              model: LineItem,
+              include: Product,
+            },
+            User,
+          ],
+        })
+      )
     } else {
-      res.sendStatus(401);
+      res.sendStatus(401)
     }
-  }catch (error){
+  } catch (error) {
     next(error)
   }
 })
@@ -67,14 +69,14 @@ app.get("/", async (req, res, next) => {
 //used for getting guest orders
 app.get("/:id", async (req, res, next) => {
   try {
-    const order = await Order.findOne({where:{lookUpId:req.params.id}})
-    if(order.dataValues.email === req.headers.authorization){
+    const order = await Order.findOne({ where: { lookUpId: req.params.id } })
+    if (order.dataValues.email === req.headers.authorization) {
       res.send(order)
-    }else{
+    } else {
       res.sendStatus(404)
     }
   } catch (error) {
-    next(error);
+    next(error)
   }
 })
 

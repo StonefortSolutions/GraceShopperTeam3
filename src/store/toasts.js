@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 const initialState = {
-  toasts: [
-  ],
+  toasts: [],
 }
 
 const toastsSlice = createSlice({
@@ -16,7 +15,7 @@ const toastsSlice = createSlice({
       state.toasts = state.toasts.filter((toast) => toast.id !== action.payload)
     },
   },
-  extraReducers: (builder) => { },
+  extraReducers: (builder) => {},
 })
 
 export const { removeToast, createToast } = toastsSlice.actions

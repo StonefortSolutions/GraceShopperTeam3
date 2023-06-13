@@ -33,7 +33,10 @@ const Cart = () => {
               <span>{product.product.name}</span>
               <span>{product.product.price}</span>
               <span>{product.quantity}</span>
-              <RemoveFromCartButton product={product} quantity={product.quantity}/>
+              <RemoveFromCartButton
+                product={product}
+                quantity={product.quantity}
+              />
             </div>
             <img src={product.product.imageURL} alt={product.product.name} />
           </div>
@@ -43,7 +46,14 @@ const Cart = () => {
           <div>{totalItems} Items</div>
         </div>
       </div>
-      <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/create")}}>Checkout</button>
+      <button
+        className="btn-primary btn-block btn"
+        onClick={() => {
+          navigate("/orders/create")
+        }}
+      >
+        Checkout
+      </button>
     </div>
   )
 }

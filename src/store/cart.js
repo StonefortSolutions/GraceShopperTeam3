@@ -22,19 +22,19 @@ export const fetchUserCart = createAsyncThunk("fetchUserCart", async () => {
 })
 
 export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
-  let cart = window.localStorage.getItem("cart");
-  if(!cart){
-    let json = JSON.stringify({ "id": uuidv4(), "userId": null, "cartItems": [] });
+  let cart = window.localStorage.getItem("cart")
+  if (!cart) {
+    let json = JSON.stringify({ id: uuidv4(), userId: null, cartItems: [] })
     window.localStorage.setItem("cart", json)
-    cart = window.localStorage.getItem("cart");
+    cart = window.localStorage.getItem("cart")
   }
   return JSON.parse(cart)
-}) 
+})
 
 export const deleteGuestCart = createAsyncThunk("deleteGuestCart", async () => {
-  let json = JSON.stringify({ "id": uuidv4(), "userId": null, "cartItems": [] });
+  let json = JSON.stringify({ id: uuidv4(), userId: null, cartItems: [] })
   window.localStorage.setItem("cart", json)
-  let cart = window.localStorage.getItem("cart");
+  let cart = window.localStorage.getItem("cart")
   return JSON.parse(cart)
 })
 
@@ -43,8 +43,8 @@ export const addToCart = createAsyncThunk("addToCart", async (payload) => {
     const token = window.localStorage.getItem("token")
     const response = await axios.post("/api/cart", payload, {
       headers: {
-        authorization: token
-      }
+        authorization: token,
+      },
     })
     return response.data
   } catch (error) {
@@ -52,50 +52,63 @@ export const addToCart = createAsyncThunk("addToCart", async (payload) => {
   }
 })
 
-export const addToGuestCart = createAsyncThunk("addToGuestCart", async (payload) => {
-  let cart = window.localStorage.getItem("cart");
-  cart = JSON.parse(cart);
-  const index = cart.cartItems.findIndex(item => item.product.id === payload.product.id)
-  if (index >= 0){
-    cart.cartItems[index].quantity += payload.quantity
-  }else{
-    cart.cartItems.push({
-      product: payload.product,
-      quantity: payload.quantity,
-    })
-  }
-  window.localStorage.setItem("cart", JSON.stringify(cart))
-  return cart;
-})
-
-export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
-  try {
-    const token = window.localStorage.getItem("token")
-    const response = await axios.put("/api/cart", payload, {
-      headers: {
-        authorization: token
-      }
-    })
-    return response.data
-  } catch (error) {
-    console.log(error)
-  }
-})
-
-export const removeFromGuestCart = createAsyncThunk("removeFromGuestCart", async (payload) => {
-  try {
-    console.log(payload);
-    let cart = window.localStorage.getItem("cart");
-    cart = JSON.parse(cart);
-    const index = cart.cartItems.findIndex(item => item.product.id === payload.product.product.id)
-    console.log(index);
-    cart.cartItems.splice(index,1);
-    window.localStorage.setItem("cart", JSON.stringify(cart));
+export const addToGuestCart = createAsyncThunk(
+  "addToGuestCart",
+  async (payload) => {
+    let cart = window.localStorage.getItem("cart")
+    cart = JSON.parse(cart)
+    const index = cart.cartItems.findIndex(
+      (item) => item.product.id === payload.product.id
+    )
+    if (index >= 0) {
+      cart.cartItems[index].quantity += payload.quantity
+    } else {
+      cart.cartItems.push({
+        product: payload.product,
+        quantity: payload.quantity,
+      })
+    }
+    window.localStorage.setItem("cart", JSON.stringify(cart))
     return cart
-  }catch (error){
-    console.log(error)
   }
-})
+)
+
+export const removeFromCart = createAsyncThunk(
+  "removeFromCart",
+  async (payload) => {
+    try {
+      const token = window.localStorage.getItem("token")
+      const response = await axios.put("/api/cart", payload, {
+        headers: {
+          authorization: token,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+export const removeFromGuestCart = createAsyncThunk(
+  "removeFromGuestCart",
+  async (payload) => {
+    try {
+      console.log(payload)
+      let cart = window.localStorage.getItem("cart")
+      cart = JSON.parse(cart)
+      const index = cart.cartItems.findIndex(
+        (item) => item.product.id === payload.product.product.id
+      )
+      console.log(index)
+      cart.cartItems.splice(index, 1)
+      window.localStorage.setItem("cart", JSON.stringify(cart))
+      return cart
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
 
 const cartSlice = createSlice({
   name: "cart",

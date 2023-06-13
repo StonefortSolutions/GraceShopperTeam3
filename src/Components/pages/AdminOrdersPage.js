@@ -32,7 +32,7 @@ function AdminOrdersPage() {
   const filteredOrders = orders.filter((order) => {
     const fullName = `${order.lastName}, ${order.firstName}`
     const shippingAddress = `${order.street}, ${order.city}, ${order.state} ${order.zip}`
-    let filtered = false;
+    let filtered = false
     if (fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
       filtered = true
     }
@@ -46,7 +46,6 @@ function AdminOrdersPage() {
     filteredOrders.length > 0 ? filteredOrders.slice(itemOffset, endOffset) : []
 
   const pageCount = Math.ceil(filteredOrders.length / itemsPerPage)
-
 
   return (
     <div className="p-2">
@@ -140,7 +139,12 @@ function AdminOrdersPage() {
           <label className="label">
             <span className="label-text">Search</span>
           </label>
-          <input type="text" placeholder="Search Orders" onChange={handleSearch} className="input input-bordered input-primary w-1/3" />
+          <input
+            type="text"
+            placeholder="Search Orders"
+            onChange={handleSearch}
+            className="input-bordered input-primary input w-1/3"
+          />
         </div>
       </div>
 

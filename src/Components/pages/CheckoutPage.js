@@ -1,34 +1,33 @@
-import axios from 'axios';
-import React, {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { deleteGuestCart, fetchUserCart } from '../../store';
+import axios from "axios"
+import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { deleteGuestCart, fetchUserCart } from "../../store"
 
 const CheckoutPage = () => {
+  const { auth, cart } = useSelector((state) => state)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const {auth,cart} = useSelector(state => state);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [street, setStreet] = useState("")
+  const [city, setCity] = useState("")
+  const [state, setState] = useState("")
+  const [zip, setZip] = useState("")
+  const [number, setNumber] = useState("")
+  const [exp, setExp] = useState("")
+  const [ccv, setCcv] = useState("")
+  const [email, setEmail] = useState("")
 
-  const[firstName,setFirstName] = useState("");
-  const[lastName,setLastName] = useState("");
-  const[street,setStreet] = useState("");
-  const[city,setCity] = useState("");
-  const[state,setState] = useState("");
-  const[zip,setZip] = useState("");
-  const[number,setNumber] = useState("");
-  const[exp,setExp] = useState("");
-  const[ccv,setCcv] = useState("");
-  const[email, setEmail] = useState("");
+  const [status, setStatus] = useState("pending")
 
-  const[status, setStatus] = useState("pending");
-
-  const[order, setOrder] = useState({data:{createdAt:""}});
+  const [order, setOrder] = useState({ data: { createdAt: "" } })
 
   const submit = async (event) => {
     try {
       event.preventDefault()
-      if(auth.id){
+      if (auth.id) {
         const newOrder = {
           firstName,
           lastName,
@@ -47,12 +46,12 @@ const CheckoutPage = () => {
             headers: {
               authorization: token,
             },
-          } 
+          }
         )
         setOrder(response)
         dispatch(fetchUserCart())
         setStatus("created")
-      }else{
+      } else {
         const newOrder = {
           firstName,
           lastName,
@@ -62,10 +61,9 @@ const CheckoutPage = () => {
           zip,
           email,
         }
-        const response = await axios.post(
-          "/api/orders",
-          { data: {newOrder, cart}}
-        )
+        const response = await axios.post("/api/orders", {
+          data: { newOrder, cart },
+        })
         setOrder(response)
         dispatch(deleteGuestCart())
         setStatus("created")
@@ -75,15 +73,16 @@ const CheckoutPage = () => {
     }
   }
 
-  const OrderCreated = ({props}) => {
-    console.log(props);
-    return(
+  const OrderCreated = ({ props }) => {
+    console.log(props)
+    return (
       <div>
         <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
           Order Created
         </h1>
         <h2>
-          Thank you {props.data.firstName} {props.data.lastName} for shopping with us.
+          Thank you {props.data.firstName} {props.data.lastName} for shopping
+          with us.
         </h2>
         <h4>Order Placed at: {props.data.createdAt}</h4>
         <h4>shipping to:</h4>
@@ -243,11 +242,11 @@ const CheckoutPage = () => {
     </div>
   )
 
-  if(status === "pending"){
+  if (status === "pending") {
     return form
-  }else if(status === "created"){
-    return (<OrderCreated props = {order}/>)
-  }else{
+  } else if (status === "created") {
+    return <OrderCreated props={order} />
+  } else {
     return OrderFailed
   }
 }

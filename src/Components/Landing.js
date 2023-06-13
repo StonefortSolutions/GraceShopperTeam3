@@ -22,7 +22,7 @@ const Landing = () => {
         <div className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-8xl font-extrabold text-transparent">
           ACME Web Store
         </div>
-      </div> 
+      </div>
       <p className="m-auto mb-2 mt-2 flex w-10/12 justify-center text-center">
         About: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni
         aliquid, delectus, illum illo id atque libero deleniti enim eius

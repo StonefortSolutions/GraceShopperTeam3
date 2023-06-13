@@ -1,6 +1,6 @@
 const conn = require("./conn")
 const { STRING, BOOLEAN, UUID, UUIDV4 } = conn.Sequelize
-const sequelize = require('sequelize') ;
+const sequelize = require("sequelize")
 
 const Order = conn.define("order", {
   id: {
@@ -10,7 +10,7 @@ const Order = conn.define("order", {
   },
   lookUpId: {
     type: sequelize.INTEGER,
-    autoIncrement: true
+    autoIncrement: true,
   },
   userId: {
     type: UUID,

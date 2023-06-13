@@ -1,38 +1,36 @@
-import React, {useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
-import { useSelector } from "react-redux";
-import { v4 as uuidv4} from "uuid"
-import { Link } from "react-router-dom";
-import { getAverageRating } from "../../util";
-import Rating from "../ui/Rating";
+import { useSelector } from "react-redux"
+import { v4 as uuidv4 } from "uuid"
+import { Link } from "react-router-dom"
+import { getAverageRating } from "../../util"
+import Rating from "../ui/Rating"
 
 const Orders = () => {
+  const { auth } = useSelector((state) => state)
 
-  const {auth} = useSelector(state => state)
-  
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([])
 
   const fetchOrders = async () => {
-    try{
-      const token = window.localStorage.getItem("token");
+    try {
+      const token = window.localStorage.getItem("token")
       const response = await axios.get("/api/orders", {
         headers: {
           authorization: token,
         },
       })
-      setOrders(response.data);
-      console.log(response);
-    }catch (error){
+      setOrders(response.data)
+      console.log(response)
+    } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchOrders()
-  },[auth])
+  }, [auth])
 
   const LogedIn = () => {
-    
     return (
       <table className="table">
         <thead>
@@ -73,11 +71,10 @@ const Orders = () => {
   }
 
   const NotLogedIn = () => {
-    const [pageState, setPageState] = useState("form");
-    const [order, setOrder] = useState({});
+    const [pageState, setPageState] = useState("form")
+    const [order, setOrder] = useState({})
 
     const Form = () => {
-
       const findOrder = async (event) => {
         event.preventDefault()
         const response = await axios.get(`/api/orders/${orderId}`, {
@@ -110,25 +107,21 @@ const Orders = () => {
     }
 
     const OrderFound = () => {
-      return (
-        <h1>
-          order found
-        </h1>
-      )
+      return <h1>order found</h1>
     }
 
-    if(pageState === "form"){
-      return <Form/>
-    }else if (pageState === "found"){
-      return <OrderFound/>
+    if (pageState === "form") {
+      return <Form />
+    } else if (pageState === "found") {
+      return <OrderFound />
     }
   }
 
   return (
     <div>
       <h1>Orders</h1>
-      {auth.id && (<LogedIn />)}
-      {!auth.id && (<NotLogedIn />)}
+      {auth.id && <LogedIn />}
+      {!auth.id && <NotLogedIn />}
     </div>
   )
 }

@@ -31,8 +31,6 @@ Review.belongsTo(User)
 Wishlist.belongsTo(User)
 Wishlist.belongsTo(Product)
 
-
-
 const TOTAL_PRODUCTS = 200
 
 getRandomCategory = () => {
@@ -168,9 +166,9 @@ const addReviewsToProducts = async () => {
   const products = await Product.findAll({ attributes: ["id"] })
   const users = await User.findAll({ attributes: ["id"] })
 
-  let reviews = [];
+  let reviews = []
 
-  for(let product of products){
+  for (let product of products) {
     const r = faker.helpers.multiple(
       () =>
         createFakeReview(
@@ -187,7 +185,6 @@ const addReviewsToProducts = async () => {
   }
 
   await Promise.all(reviews.map((rvw) => Review.create(rvw)))
-
 }
 
 const seedProducts = async () => {
@@ -205,36 +202,35 @@ const seedUsers = async () => {
       email: "seed1@test.com",
       isAdmin: true,
       stripeId: "cus_O2a2nOTbV2IKx8",
-      avatar: avatarImage
-
+      avatar: avatarImage,
     }),
     User.create({
       username: "lucy",
       password: "123",
       email: "seed2@test.com",
       stripeId: "cus_O2aA5XZxwpruPF",
-      avatar: avatarImage2
+      avatar: avatarImage2,
     }),
     User.create({
       username: "dudedude",
       password: "123",
       email: "seed5@test.com",
       stripeId: "cus_O2aBih6vn7wbEa",
-      avatar: avatarImage
+      avatar: avatarImage,
     }),
     User.create({
       username: "larry",
       password: "123",
       email: "seed3@test.com",
       stripeId: "cus_O2aBxuGDPfPlD2",
-      avatar: avatarImage2
+      avatar: avatarImage2,
     }),
     User.create({
       username: "ethyl",
       password: "123",
       email: "seed4@test.com",
       stripeId: "cus_O2aCVXnQzwXMri",
-      avatar: avatarImage
+      avatar: avatarImage,
     }),
   ])
   await Order.create({
@@ -272,5 +268,5 @@ module.exports = {
   Review,
   Cart,
   CartItem,
-  Wishlist
+  Wishlist,
 }

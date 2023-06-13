@@ -14,10 +14,9 @@ function Rating({ rating, onSelect }) {
     const stars = generateStars(starIndex)
     setRatingState(starIndex)
     setStars(stars)
-    if ('function' === typeof onSelect) {
+    if ("function" === typeof onSelect) {
       onSelect(starIndex)
     }
-
   }
 
   const generateStars = (rating) => {
@@ -29,11 +28,13 @@ function Rating({ rating, onSelect }) {
         <div
           key={i + rand}
           onClick={() => onClick(i)}
-          className={`mask mask-star h-4 w-4 ${i <= rating ? "bg-secondary" : "bg-base-300"
-            } ${onSelect
+          className={`mask mask-star h-4 w-4 ${
+            i <= rating ? "bg-secondary" : "bg-base-300"
+          } ${
+            onSelect
               ? "hover:scale-110 hover:cursor-pointer hover:bg-base-200"
               : ""
-            }`}
+          }`}
         ></div>
       )
     }

@@ -35,11 +35,15 @@ export const fetchUser = createAsyncThunk("fetchUser", async (id) => {
 export const updateUser = createAsyncThunk("updateUser", async (updateData) => {
   try {
     const token = window.localStorage.getItem("token")
-    const response = await axios.put(`/api/users/${updateData.id}`, {data: updateData.data},{
-      headers: {
-        authorization: token,
-      },
-    })
+    const response = await axios.put(
+      `/api/users/${updateData.id}`,
+      { data: updateData.data },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    )
   } catch (error) {
     if (error.response.status === 403) {
       window.alert(error.response.data)
@@ -60,8 +64,8 @@ const usersSlice = createSlice({
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       return action.payload
     })
-    builder.addCase(updateUser.fulfilled, (state,action) =>{
-      return true;
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      return true
     })
   },
 })

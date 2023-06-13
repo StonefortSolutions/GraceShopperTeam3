@@ -7,7 +7,12 @@ import CreateAccount from "./CreateAccount"
 import NotFound from "./NotFound"
 import SingleProductView from "./SingleProductView"
 import { useSelector, useDispatch } from "react-redux"
-import { loginWithToken, fetchGuestCart, fetchUserCart, fetchProducts,} from "../store"
+import {
+  loginWithToken,
+  fetchGuestCart,
+  fetchUserCart,
+  fetchProducts,
+} from "../store"
 import { Link, Routes, Route } from "react-router-dom"
 import Navbar from "./Navbar"
 import Account from "./Account"

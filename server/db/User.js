@@ -50,24 +50,28 @@ const User = conn.define("user", {
   },
   avatar: {
     type: TEXT,
-  }
+  },
 })
 
 User.prototype.createOrder = async function (data) {
   const cart = await this.getCart()
-  const order = await conn.models.order.create(data);
+  const order = await conn.models.order.create(data)
 
-  const orderItems = [];
+  const orderItems = []
 
-  for(let item of cart.cartItems){
-    const createLineItem = async ()=> {
-      await conn.models.lineItem.create({productId: item.dataValues.productId, quantity: item.dataValues.quantity, orderId: order.id})
-      await item.destroy();
+  for (let item of cart.cartItems) {
+    const createLineItem = async () => {
+      await conn.models.lineItem.create({
+        productId: item.dataValues.productId,
+        quantity: item.dataValues.quantity,
+        orderId: order.id,
+      })
+      await item.destroy()
     }
-    orderItems.push(createLineItem());
+    orderItems.push(createLineItem())
   }
-  await Promise.all(orderItems);
-  return order;
+  await Promise.all(orderItems)
+  return order
 }
 
 User.prototype.getCart = async function () {

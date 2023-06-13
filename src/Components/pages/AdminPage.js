@@ -6,9 +6,11 @@ const AdminPage = () => {
   const { auth } = useSelector((state) => state)
 
   if (!auth.isAdmin) {
-    return (<div className="drawer-content flex flex-col items-center ">
-      <h1>Not Authorized</h1>
-    </div>)
+    return (
+      <div className="drawer-content flex flex-col items-center ">
+        <h1>Not Authorized</h1>
+      </div>
+    )
   }
   return (
     <div className="">
@@ -19,7 +21,7 @@ const AdminPage = () => {
           <Outlet />
           <label
             htmlFor="adminSidebar"
-            className="drawer-button btn-primary btn md:hidden"
+            className="btn-primary drawer-button btn md:hidden"
           >
             Sidebar Toggle
           </label>
