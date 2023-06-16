@@ -25,7 +25,7 @@ const HomePageReviews = () => {
       </div>
       {reviews.slice(0, 6).map((review) => {
         return (
-          <div className="glass m-4 w-[1500px] rounded-lg p-4 backdrop-blur">
+          <div className="glass m-4 rounded-lg max-w-xl p-4 backdrop-blur">
             <h2 className="text-4xl">{review.user.username}</h2>
             <div className="text-2xl">{review.product.name}</div>
             <div>{review.description}</div>

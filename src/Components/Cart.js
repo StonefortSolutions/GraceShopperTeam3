@@ -35,7 +35,7 @@ const Cart = () => {
             <CartItem key={product.product.id} product={product}/>
           ))}
         </div>
-        <div className="card w-64 glass fixed mt-4 p-4" style={{height: "150px", right: 15}}>
+        <div className="card w-64 glass fixed mt-4 p-4 h-36 right-4">
           <div className="badge badge-ghost">
             <div className="text-lg font-bold"> Total: ${totalPrice}</div>
           </div>
